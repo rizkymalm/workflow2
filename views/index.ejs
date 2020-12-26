@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Dashboard | Workflow</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <%- include ('./partials/header') %>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="lSide">
+                <%- include ('./partials/sidebar') %>
+            </div>
+            <div class="rSide">
+                <div class="head gradientr">
+                </div>
+                <div class="mainbox column">
+
+                    <div class="spccols-6">
+                        <div style="width: 100%;" class="containt short-table">
+                            <div class="headtitle trans">
+                                <p class="nopad" style="padding: 5px 15px; position: relative;">
+                                    Assign To Me
+                                    <span class="dotted" style="background: red;"></span>
+                                </p>
+                                <ul class="tab-image-setting nopad">
+                                    <li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="assigntome"></li>
+                                    <li class="option-click" onclick="clickToggle(assigntome)"><img src="<%= baseurl() %>images/icon/option-strip.png"></li>
+                                </ul>
+                                <div class="option-box option-menu shadow half size-std desk" id="assigntome" style="display: none;">
+                                    <ul class="nopad">
+                                        <li><a href="<%= baseurl() %>">Refresh</a></li>
+                                        <li><a href="">Hide</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="table-wrapper table-toggle assigntome" style="width: 100%;">
+                                <table class="size-std basic-tables spc-tb" style="width: 100%;" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th align="left">Subject</th>
+                                        <th align="left">Priority</th>
+                                        <th align="right">Duedate</th>
+                                    </tr>
+                                    <% for(let tome of reqtome){ %>
+                                    <tr>
+                                        <td><a href="<%= baseurl() %>request/detail/<%= tome.id_request %>"><%= tome.id_project+"_"+tome.project_name+" - "+tome.subj_req %></a></td>
+                                        <td><%= tome.priority_issue %></td>
+                                        <td align="right"><%= moment(tome.duedate).format('D-MMM-YYYY') %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="spccols-6">
+                        <div style="width: 100%;" class="containt short-table">
+                            <div class="headtitle trans">
+                                <p class="nopad" style="padding: 5px 15px; position: relative;">
+                                    Request to <b><%= dept[0].initial %></b>
+                                    <span class="dotted" style="background: green;"></span>
+                                </p>
+                                <ul class="tab-image-setting nopad">
+                                    <li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="assigntodep"></li>
+                                    <li class="option-click" href="#assigntodep"><img src="<%= baseurl() %>images/icon/option-strip.png"></li>
+                                </ul>
+                            </div>
+                            <div class="table-wrapper table-toggle assigntodep" style="width: 100%;">
+                                <table class="size-std basic-tables spc-tb" style="width: 100%;" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th align="left">Assignee</th>
+                                        <th align="left">Subject</th>
+                                        <th align="right">Duedate</th>
+                                    </tr>
+                                    <% 
+                                        for(let todept of bydept){ 
+                                            if(todept.status=="open"){
+                                                var colorstat = "#ffa500"
+                                            }else if(todept.status=="onprogres"){
+                                                var colorstat = "yellow"
+                                            }else if(todept.status=="reopen"){
+                                                var colorstat = "#ff8d00"
+                                            }
+                                    %>
+                                    <tr>
+                                        <td><%= todept.name_employee %></td>
+                                        <td style="position: relative;"><div class="doStatus" style="background-color: <%= colorstat %>;"></div><a href="<%= baseurl() %>request/detail/<%= todept.id_request %>"><%= todept.id_project+"_"+todept.project_name+" - "+todept.subj_req %> | <%= todept.status %></a></td>
+                                        <td align="right"><%= moment(todept.duedate).format('D-MMM-YYYY') %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+<%- include ('./partials/footer') %>
+</html>

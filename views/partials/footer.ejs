@@ -1,0 +1,37 @@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="<%= baseurl() %>js/angular/angular.js" type="text/javascript"></script>
+<script src="<%= baseurl() %>js/dirPagination.js" type="text/javascript"></script>
+<script src="<%= baseurl() %>js/animate.js" type="text/javascript"></script>
+<script src="<%= baseurl() %>js/resize.window.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.rSide .head').css({
+        "height" : $('.lSide .head').height() +"px"
+    })
+    $('.wrapper').css({
+        "height" : $(window).height() +"px"
+    })
+    $('.rSide .head').load("<%= baseurl() %>top_desk");
+    $('.value-control li').click(function() {
+        var ctrltext = $(this).data("select")
+        $('.text-control').text(ctrltext)
+    })
+})
+function getUser(id,leader){
+    var leader = leader
+    var id = id.id;
+    var iddept = $("#"+id).find('option:selected').attr('value')
+    var getData = "id="+iddept+"&leader="+leader
+    $.ajax({
+        data: getData,
+        cache: true,
+        url: "<%= baseurl() %>workflow/userdep/"+iddept+"/"+leader,
+        beforeSend: function(){
+            $('.loadSelect').show();
+        },success: function(select){
+            $('.loadSelect').hide();
+            $('#useropen').html(select);h
+        }
+    })
+}
+</script>

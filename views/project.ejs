@@ -1,0 +1,136 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Request</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <%- include ('./partials/header') %>
+        <!-- <script type="text/javascript" src="js/angular.piechart.min.js"></script> -->
+        <!-- <link rel='stylesheet' type='text/css' href='css/angular.piechart.css'> -->
+    </head>
+    <style>
+    
+    </style>
+    <body>
+        <div class="blur" style="display: none; z-index: 1001"></div>
+        <div class="popup">
+            <div class="close-onbox" onClick="closePopup()">
+                <div style="width: 15px; height: 15px;">
+                    <img src="<%= baseurl() %>images/icon/cross-thick.png">
+                </div>
+            </div>
+            <form action="<%= baseurl() %>workflow/request/delete" method="POST">
+                <table class="popupContent" cellspacing="10" cellpadding="10">
+                    <tr>
+                        <td style="text-align: left;">Delete</td>
+                    </tr>
+                    <tr>
+                        <td>Apakah anda yakin ingin menghapus project ini ?<input type="hidden" name="reqID" class="req_id"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="myBtn myButton-edit" onclick="closePopup()">Cancel</button>
+                            <button type="submit" class="myBtn myButton-delete">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div class="popupBtn">
+                <a href="" class="myButton-gradBlueGreen size-std"></a>
+                <a href="" class="myButton-white size-std"></a>
+            </div>
+        </div>
+        <div class="wrapper" ng-app="myApp" ng-controller="PageCtrl">
+            <div class="lSide">
+                <%- include ('./partials/sidebar') %>
+            </div>
+            <div class="rSide">
+                <div class="head gradientr">
+                
+                </div>
+                <div class="mainbox column">
+                    <div class="containt cols-12">
+                        <div class="headtitle trans">
+                            <p class="size-head4 nopad">Request Issues</p>
+                        </div>
+                        <div class="list-control">
+                            <div class="list-control-box">
+                                <button class="option-click btn-list-control" onClick="clickToggle(list_control_show)">
+                                    Show :&nbsp; 25 
+                                    <img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+                                </button>
+                                <div class="option-box option-menu shadow half box-list-control" id="list_control_show">
+                                    <ul class="full-length nopad size-std">
+                                        <li class="pad-tb" ng-click="limitList(1)">20</li>
+                                        <li class="pad-tb" ng-click="limitList(2)">50</li>
+                                        <li class="pad-tb" ng-click="limitList(3)">100</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-control-box">
+                                <button class="option-click btn-list-control" onClick="clickToggle(list_control_sort)">
+                                    Group By :&nbsp; <span id="GroupControl" class="text-control">-Not Selected-</span>
+                                    <img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+                                </button>
+                                <div class="option-box option-menu shadow half box-list-control" id="list_control_sort">
+                                    <ul style="width: 100%;" class="nopad value-control size-std">
+                                        <li data-select="Due Date" ng-click="group('duedate')">Due Date</li>
+                                        <li data-select="Created Date" ng-click="group('created')">Created Date</li>
+                                        <li data-select="Creator" ng-click="group('researcher')">Creator</li>
+                                    </ul>
+                                </div>
+                                <input type="search" ng-model="search">
+                            </div>
+                        </div>
+                        <div class="full-length" style="overflow-x: auto; padding-bottom: 40px; width: 100%;">
+                            <table class="size-std full-tables" id="req_tab" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <th style="text-align: left;" ng-click="sort('id')">Project ID</th>
+                                    <th style="text-align: left;" ng-click="sort('project_name')">Project Name</th>
+                                    <th ng-click="sort('researcher')">Creator</th>
+                                    <th ng-click="sort('created')">Created</th>
+                                    <th ng-click="sort('duedate')">Duedate</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr dir-paginate="req in issues | orderBy:sortKey:reverse | filter: search | itemsPerPage:20">
+                                    <td><a href="<%= baseurl() %>project/detail/{{req.id}}">{{req.id}}</a></td>
+                                    <td>{{req.project_name}} - {{req.client}}</td>
+                                    <td style="text-align: center;">{{req.researcher}}</td>
+                                    <td style="text-align: center;">{{req.created}}</td>
+                                    <td style="text-align: center;">{{req.duedate}}</td>
+                                    <td style="text-align: center;">
+                                        <a href="<%= baseurl() %>project/edit/{{req.id}}" class="myBtn myButton-edit">Edit</a>
+                                        <!-- <a href="javascript:void(0);" class="myBtn myButton-delete delete" data-id="{{req.id}}">Delete</a> -->
+                                    </td>
+                                </tr>
+                            </table>
+                            <dir-pagination-controls max-size="2" direction-links="true"boundary-links="true" class="size-std"></dir-pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <%- include ('./partials/footer') %>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#req_tab").on('click','.delete',function(){
+        var id_req = $(this).data("id");
+        $('.popup').show();
+        $('.blur').show();
+        $('.req_id').val(id_req);
+    })
+})
+</script>
+<script type="text/javascript">
+    var app = angular.module('myApp',['angularUtils.directives.dirPagination']);
+    app.controller('PageCtrl',function ($scope, $http) {
+        var jsoon = <%- JSON.stringify(objs) %>
+        $scope.issues = jsoon;
+        $scope.sort = function (keyname) {
+            $scope.sortKey = keyname;
+            $scope.reverse = !$scope.reverse
+        }
+    })
+</script>
+</html>

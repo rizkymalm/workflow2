@@ -1,0 +1,96 @@
+<% if(tipe=="comment"){ %>
+    <form class="frm_cmnt">
+        <table class="popupContent size-std" cellspacing="10" cellpadding="10">
+            <tr>
+                <td style="text-align: left; border-bottom: 1px solid #dfe8f1;">Add Comment</td>
+            </tr>
+            <tr>
+                <td><input type="hidden" name="id" value="<%= id %>" readonly> <textarea name="cmnt" class="full-length"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="reset" class="myBtn myButton-delete" onclick="closePopup()">Cancel</button>
+                    <button type="submit" id="btn-post" class="myBtn myButton-submit" style="position: relative;">Post
+                        <div class="loadSelect" style="width: 100%; height: 100%; left: 0;">
+                            <img src="<%= baseurl() %>images/icon/ajaxloader.gif">
+                        </div>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+<% }else if(tipe=="attachment"){ %>
+    <form action="<%= baseurl() %>request/attachment/" class="frm_attach" method="POST" enctype="multipart/form-data" id="frm_attach">
+        <table class="popupContent size-std" cellspacing="10" cellpadding="10">
+            <tr>
+                <td style="text-align: left; border-bottom: 1px solid #dfe8f1;">Add Comment</td>
+            </tr>
+            <tr>
+                <td><input type="hidden" name="id" value="<%= id %>"> <input type="file" name="fileupload" id="fileupload" multiple></td>
+            </tr>
+            <tr>
+                <td>
+                    <button type="reset" class="myBtn myButton-delete" onclick="closePopup()">Cancel</button>
+                    <button type="submit" id="btn-post" class="myBtn myButton-edit" style="position: relative;">Post
+                        <div class="loadSelect" style="width: 100%; height: 100%; left: 0;">
+                            <img src="<%= baseurl() %>images/icon/ajaxloader.gif">
+                        </div>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+<% } %>
+
+<script>
+$(document).ready(function() {
+    $('.frm_cmnt').submit(function(e){
+        var data = $(this).serialize();
+        $.ajax({
+            url: '<%= baseurl() %>request/comment/',
+            type: "POST",
+            cache: false,
+            data: data,
+            beforeSend: function(cmnt){
+                $(".loadSelect").show();
+                $('#btn-post').removeClass('myButton-edit');
+                $('#btn-post').addClass('myButton-disable');
+            },success: function(cmnt){
+                $('#btn-post').addClass('myButton-edit');
+                $('#btn-post').removeClass('myButton-disable');
+                $(".loadSelect").hide();
+                $('.popupContent').html(cmnt)
+            }
+        })
+        return false;
+    })
+})
+// $(document).ready(function() {
+//     $('.frm_attach').submit(function(event){
+//         var data = new FormData();
+//         var file = $('#fileupload').prop('files')[0];
+//         data.append("fileupload", file);
+//         $.ajax({
+//             url: '<%= baseurl() %>workflow/request/attachment/',
+//             enctype: 'multipart/form-data',
+//             processData: false,
+//             contentType: false,
+//             type: "POST",
+//             cache: false,
+//             data: data,
+//             timeout: 100000,
+//             beforeSend: function(cmnt){
+//                 $(".loadSelect").show();
+//                 $('#btn-post').removeClass('myButton-edit');
+//                 $('#btn-post').addClass('myButton-disable');
+//             },success: function(cmnt){
+//                 $('#btn-post').addClass('myButton-edit');
+//                 $('#btn-post').removeClass('myButton-disable');
+//                 $(".loadSelect").hide();
+//                 $('.popupContent').html(cmnt)
+//             }
+//         })
+//         return false;
+//     })
+// })
+</script>

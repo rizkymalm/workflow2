@@ -1,0 +1,149 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Request</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="<%= baseurl() %>plugin/fileinput/component.css">
+    <link rel="stylesheet" href="<%= baseurl() %>plugin/fileinput/normalize.css">
+    <%- include ('./partials/header') %>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="lSide">
+            <%- include ('./partials/sidebar') %>
+        </div>
+        <div class="rSide">
+            <div class="head gradientr">
+            </div>
+            <div class="mainbox column">
+                <div class="cols-12 containt">
+                    <div class="headtitle trans">
+                        <p class="nopad size-head4" style="padding: 5px 15px; position: relative;">
+                            Create Issues
+                        </p>
+                    </div>
+                    <form action="<%= baseurl() %>request/save" method="POST" id="validate-frm" enctype="multipart/form-data">
+                    <table style="width: 100%;" cellpadding="8" cellspacing="8" class="size-std">
+                        <!-- <tr>
+                            <td style="text-align: right;">ID Project</td>
+                            <td>
+                                <input type="text" name="idreq" class="frm-std" required="">
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Request To</td>
+                            <td>
+                                <select name="dept" onChange="getUser(this,true)" id="optdept" class="frm-std" required="">
+                                    <option value="0">--Select Departement--</option>
+                                    <% for(let dep of dept){ %>
+                                        <option value="<%= dep.id_department %>"><%= dep.department+" ("+dep.initial+")" %></option>
+                                    <% } %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Assignee</td>
+                            <td style="position: relative;">
+                                <div class="loadSelect">
+                                    <img src="<%= baseurl() %>images/icon/ajaxloader.gif">
+                                </div>
+                                <select name="assignee" id="useropen" class="frm-std" required="">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Project</td>
+                            <!-- <td>
+                                <select name="project">
+                                    <option value="0">-- Select Project --</option>
+                                    <% for (var prj of project){ %>
+                                        <option value="<%= prj.id_project %>"><%= prj.id_project+" - "+prj.project_name %></option>
+                                    <% } %>
+                                </select>
+                            </td> -->
+                           
+                            <td class="style1">
+                                <% 
+                                if(qprj==true){
+                                    var assignPrj = assignProject[0].id_project
+                                }else{
+                                    var assignPrj = ""
+                                }
+                                %>
+                                <input type='text'
+                                    class='flexdatalist form-contro frm-stdl'
+                                    data-min-length='1'
+                                    list='kategori'
+                                    name='project'
+                                    id="kat"
+                                    value="<%= assignPrj %>">
+                                    <datalist id="kategori">
+                                        <% for(prj of project){ %>
+                                            <option value="<%= prj.id_project %>"><%= prj.id_project+" - "+prj.project_name %></option>
+                                        <% } %>
+                                    </datalist>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Subject</td>
+                            <td><input type="text" name="subject" placeholder="subject" class="frm-std" required=""></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;" class="frm-std">Description</td>
+                            <td><textarea name="desc"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Priority</td>
+                            <td>
+                                <select name="priority">
+                                    <option value="major">Major</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Attachment</td>
+                            <td>
+                                <input type="file" name="fileupload" id="file-1" class="inputfile inputfile-1" data-multiple-caption="{count} files selected" multiple style="display:none;"/>
+                                <label for="file-1"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 20 17"><path d="M10 0l-5.2 4.9h3.3v5.1h3.8v-5.1h3.3l-5.2-4.9zm9.3 11.5l-3.2-2.1h-2l3.4 2.6h-3.5c-.1 0-.2.1-.2.1l-.8 2.3h-6l-.8-2.2c-.1-.1-.1-.2-.2-.2h-3.6l3.4-2.6h-2l-3.2 2.1c-.4.3-.7 1-.6 1.5l.6 3.1c.1.5.7.9 1.2.9h16.3c.6 0 1.1-.4 1.3-.9l.6-3.1c.1-.5-.2-1.2-.7-1.5z"/></svg> 
+                                <span style="margin-top:5px;" class="size-std">Choose a file&hellip;</span></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Due date</td>
+                            <td><input type="date" name="duedate"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;"><input type="submit" value="Save" class="myButton-submit"></td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<%- include ('./partials/footer') %>
+<link rel="stylesheet" href="<%= baseurl() %>plugin/fileinput/custom-file-input.js">
+<script src="<%= baseurl() %>plugin/autocomplete/jquery.flexdatalist.js"></script>
+<script type="text/javascript">
+function getUser(id,leader){
+    var leader = leader
+    var id = id.id;
+    var iddept = $("#"+id).find('option:selected').attr('value')
+    var getData = "id="+iddept+"&leader="+leader
+    $.ajax({
+        data: getData,
+        cache: true,
+        url: "<%= baseurl() %>userdep/"+iddept+"/"+leader,
+        beforeSend: function(){
+            $('.loadSelect').show();
+        },success: function(select){
+            $('.loadSelect').hide();
+            $('#useropen').html(select);h
+        }
+    })
+}
+</script>
+</html>

@@ -1,0 +1,64 @@
+<% if(tipe=="status") { %>
+    <form style="display: inline;">
+        <input type="hidden" name="idreq" value="<%= id %>">
+        <input type="hidden" name="tipe" id="tipe" value="<%= tipe %>">
+        <select name="updval" id="selectstatus" style="padding: 1px 2px;" onchange="editStatus(this.form)">
+            <% var arrval = ['open','onprogres','resolved','closed','cancel','reopen'] %>
+            <% for (var i=0;i<arrval.length;i++){ %>
+                <% if(arrval[i]==result[0].status){var selected="selected"}else{var selected=""} %>
+                <option value="<%= arrval[i] %>" <%= selected %>><%= arrval[i] %></option>
+            <% } %>
+        </select>
+    </form>
+<% }else if(tipe=="priority_issue"){ %>
+    <form style="display: inline;">
+            <input type="hidden" name="idreq" value="<%= id %>">
+            <input type="hidden" name="tipe" id="tipe" value="<%= tipe %>">
+            <select name="updval" id="selectstatus" style="padding: 1px 2px;" onchange="editStatus(this.form)">
+                <% var arrval = ['important','major']; %>
+                <% for (var i=0;i<arrval.length;i++){ %>
+                    <% if(arrval[i]==result[0].priority_issue){var selected="selected"}else{var selected=""} %>
+                    <option value="<%= arrval[i] %>" <%= selected %>><%= arrval[i] %></option>
+                <% } %>
+            </select>
+        </form>
+<% }else if(tipe=="desc_req"){ %>
+    <form style="display: inline;">
+            <input type="hidden" name="idreq" value="<%= id %>">
+            <input type="hidden" name="tipe" id="tipe" value="<%= tipe %>">
+            <textarea name="updval" id="" class="textareaedit"><%= result[0].desc_req %></textarea>
+    </form>
+<% }else if(tipe=="duedate"){ %>
+    <form style="display: inline;">
+            <input type="hidden" name="idreq" value="<%= id %>">
+            <input type="hidden" name="tipe" id="tipe" value="<%= tipe %>">
+            <input type="date" name="updval" value="<%= moment(result[0].duedate).format('YYYY-MM-D') %>" style="padding: 1px 2px; max-width: 80%;" onchange="editStatus(this.form)">
+    </form>
+<% }else if(tipe="id_req_to"){ %> 
+    <form style="display: inline;">
+        <input type="hidden" name="idreq" value="<%= id %>">
+        <input type="hidden" name="tipe" id="tipe" value="<%= tipe %>">
+        <select name="updval" style="padding: 1px 2px;" onchange="editStatus(this.form)">
+            <option value="<%= result[0].id_req_to %>"><%= result[0].name_employee %></option>
+            <% for(emp of getemployee){ %>
+            <option value="<%= emp.id_employee %>"><%= emp.name_employee %></option>
+            <% } %>
+        </select>
+    </form>
+<% } %>
+
+<script>
+$(document).ready(function(){
+    $('.textareaedit').css({
+        "height" : $('.descBox').height() +"px",
+        "width" : $('.descBox').width() +"px",
+        "max-height" : $('.descBox').height() +"px",
+        "max-width" : $('.descBox').width() +"px"
+    })
+    $('.textareaedit').keydown(function (e) {
+        if (e.ctrlKey && e.keyCode == 13){
+                editStatus(this.form)
+        }
+    });
+})
+</script>

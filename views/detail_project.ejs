@@ -1,0 +1,232 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Request</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <%- include ('./partials/header') %>
+</head>
+<body>
+    <div class="blur" style="display: none; z-index: 1001" onclick="closePopup()"></div>
+    <div class="popup">
+        <div class="close-onbox" onClick="closePopup()">
+            <div style="width: 15px; height: 15px;">
+                <img src="<%= baseurl() %>images/icon/cross-thick.png">
+            </div>
+        </div>
+        <form class="frm_cmnt">
+            <table class="popupContent size-std" cellspacing="10" cellpadding="10">
+                <tr>
+                    <td style="text-align: left; border-bottom: 1px solid #dfe8f1;">Add Comment</td>
+                </tr>
+                <tr>
+                    <td><textarea name="cmnt" class="full-length"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="reset" class="myBtn myButton-delete" onclick="closePopup()">Cancel</button>
+                        <button type="submit" id="btn-post" class="myBtn myButton-edit" style="position: relative;">Post
+                            <div class="loadSelect" style="width: 100%; height: 100%; left: 0;">
+                                <img src="<%= baseurl() %>images/icon/ajaxloader.gif">
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div class="popupBtn">
+            <a href="" class="myButton-gradBlueGreen size-std"></a>
+            <a href="" class="myButton-white size-std"></a>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="lSide">
+            <%- include ('./partials/sidebar') %>
+        </div>
+        <div class="rSide">
+            <div class="head gradientr">
+            </div>
+            <div class="mainbox column">
+                <div class="cols-12 column">
+                    <div class="spccols-8">
+                        <div class="full-length containt">
+                            <div class="headtitle trans">
+                                <p class="size-head4 nopad"><%= prj[0].project_name %></p>
+                                <p class="size-note nopad"><%= prj[0].id_project %></p>
+                                <ul class="tab-image-setting nopad">
+                                    <li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="project_detail"></li>
+                                    <li class="option-click" onclick="clickToggle(issue_detail)"><img src="<%= baseurl() %>images/icon/option-strip.png"></li>
+                                </ul>
+                                <div class="option-menu option-box shadow half size-std" id="issue_detail" style="right: 20px; top: 30px; display: none;">
+                                    <ul class="nopad size-std">
+                                        <li><a href="<%= baseurl() %>project/edit/<%= prj[0].id_project %>">Edit</a></li>
+                                        <li><a href="<%= baseurl() %>project/delete/<%= prj[0].id_project %>">Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="width: 100%; padding: 10px 0;" class="project_detail">
+                                <table class="size-std tab-detail">
+                                    <tr>
+                                        <td>Client:</td>
+                                        <td>
+                                            <%= rescli[0].client_name %>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status:</td>
+                                        <td class="openEdit">
+                                            <div style="position: relative;">
+                                                <span id="status"><%= is_assigned %></span>
+                                                <a href="<%= baseurl() %>request/create?prj=<%= prj[0].id_project %>" class="size-note noteEdit" href="duedate">Edit</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <fieldset>
+                                    <legend><b>Description</b></legend>
+                                    <table class="size-std" style="width: 100%;">
+                                        <tr>
+                                            <td class="openEdit">
+                                                <div class="descBox openEdit">
+                                                    <span id="desc_req">
+                                                        <%= prj[0].project_desc %>
+                                                    </span>
+                                                    <span class="size-note noteEdit" style="position: absolute; right: -25px; top: 7px;" href="desc_req">
+                                                        <img src="<%= baseurl() %>images/icon/pencil-edit-button.png" alt="Edit Description" style="width: 15px;">
+                                                    </span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset>
+                            </div>
+                        </div>
+                        <!-- Tabgrid -->
+                        <div class="full-length containt" style="margin-top: 20px;">
+                            <div class="tabgrid full-length">
+                                <ul>
+                                    <li class="thistab delay" data="assignee" data-target="0">Request</li>
+                                    <li class="thistab delay" data="worklog" data-target="1">Work log</li>
+                                    <li class="thistab delay" data="attachment" data-target="2">Attachment</li>
+                                </ul>
+                                <div class="selectorline"></div>
+                            </div>
+                            <div class="full-length tabgridwrap">
+                                <div class="tabgridcontent">
+                                    <div class="gridcontent delay" id="request" data="1">
+                                        <% if(request.length == 0){ %>
+                                            <p>No Request yet</p>
+                                        <% }else{ %>
+                                        <div class="listassignee">
+                                            <table class="full-length size-std full-tables" cellspacing="0" cellpadding="0">
+                                                <% for(let req of request){ %>
+                                                <tr>
+                                                    <td><a href="<%= baseurl() %>request/detail/<%= req.id_request %>"><%= req.subj_req %></a></td>
+                                                    <td><%= req.status %></td>
+                                                    <td><%= req.name_employee %></td>
+                                                    <td align="right"><%= moment(req.duedate).format("DD MMM YYYY") %></td>
+                                                </tr>
+                                                <% } %>
+                                            </table>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="gridcontent delay" id="worklog" data="2">
+                                        <% for(let log of logs){ %>
+                                        <div class="cmntBox">
+                                            <table class="size-std">
+                                                <tr>
+                                                    <td><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="prj_<%= log.id_project %>" title="Collapse" height="10" style="cursor: pointer;"></td>
+                                                    <td><a href=""><%= log.name_employee %></a> <%= log.log_type+" a "+log.detail_log+" on - "+moment(log.update_log).format('DD/MMM/YYYY') %></td>
+                                                </tr>
+                                                <tr class="prj_<%= log.id_project %>">
+                                                    <td>&nbsp;</td>
+                                                    <td style="padding: 5px 0;"><%= log.comment_text %></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <div class="gridcontent delay" id="attachment" data="3">
+                                        <% if(attach.length == 0){ %>
+                                            <p>No Request yet</p>
+                                        <% }else{ %>
+                                        <div class="listassignee">
+                                            <table class="full-length size-std full-tables" cellspacing="0" cellpadding="0">
+                                                <% for(attach of attach){ %>
+                                                <tr>
+                                                    <td><%= attach.file_name %></td>
+                                                    <td><a href="<%= baseurl() %>uploads/<%= attach.file_name %>"><img src="<%= baseurl() %>images/icon/download-icon.png" style="height: 15px;" title="Download Attachment"></a></td>
+                                                </tr>
+                                                <% } %>
+                                            </table>
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tabgrid -->
+                    </div>
+                    <div class="spccols-4 containt" style="background:#ffffff;">
+                        <div class="headtitle trans">
+                            <p class="size-head4 nopad">Assignment</p>
+                            <p class="size-note nopad">&nbsp;</p>
+                            <ul class="tab-image-setting nopad">
+                                <li><img src="<%= baseurl() %>images/icon/arrow-up.png" class="btn-tab-toggle delay" href="assign-detail"></li>
+                            </ul>
+                        </div>
+                        <div style="width: 100%; padding: 10px;" class="size-std assign-detail" id="assign-detail">
+                            <table style="width: 100%;" class="size-std tab-detail" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>Creator</td>
+                                    <td><%= prj[0].name_employee %></td>
+                                </tr>
+                                <tr>
+                                    <td>Duedate</td>
+                                    <td class="openEdit">
+                                        <div style="position: relative;">
+                                            <span id="duedate"><%= moment(prj[0].duedate).format('DD-MMM-YYYY') %></span>
+                                            <span class="size-note noteEdit" href="duedate">Edit</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Created</td>
+                                    <td><%= moment(prj[0].created_project).format('DD-MMM-YYYY') %></td>
+                                </tr>
+                                <tr>
+                                    <td>Updated at</td>
+                                    <td><%= moment(prj[0].created_project).fromNow() %></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+<link rel="stylesheet" href="<%= baseurl() %>plugin/fileinput/custom-file-input.js">
+<%- include ('./partials/footer') %>
+<script type="text/javascript">
+function editStatus(frmdata){
+    var data = $(frmdata).serialize();
+    var tipe = $("#tipe").val();
+    $.ajax({
+        type: "post",
+        url: "<%= baseurl() %>request/change",
+        data: data,
+        cache: false,
+        beforeSend: function(){
+            $('.loadSelect').show()
+        },success: function(change){
+            $('.loadSelect').hide()
+            $("#selectstatus").hide()
+            $('#'+tipe).html(change)
+        }
+    })
+}
+</script>
+</html>

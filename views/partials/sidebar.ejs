@@ -1,0 +1,31 @@
+<div class="head gradientl desk">
+    <img src="https://images.squarespace-cdn.com/content/58217edf893fc002c496bf14/1478854335720-39UQ9QG0KWVI1XOSPYTG/Asset+1.png?content-type=image%2Fpng" class="logo">
+</div>
+<div class="sidebar desk">
+    <ul class="menu">
+        <li><a href="<%= baseurl() %>" class="size-std"><img src="<%= baseurl() %>images/icon/dashboard.png"> Dashboard</a></li>
+        <li><p class="nopad accord size-std" href="#issue"><img src="<%= baseurl() %>images/icon/articles.png">Request</p>
+            <ul class="submenu" id="issue">
+                <li><a href="<%= baseurl() %>request/create" class="size-std">Create</a></li>
+                <li><a href="<%= baseurl() %>request/" class="size-std">View</a></li>
+            </ul>
+        </li>
+        <li><p class="nopad accord size-std" href="#project"><img src="<%= baseurl() %>images/icon/project.png">Project</p>
+            <ul class="submenu" id="project">
+                <li><a href="<%= baseurl() %>project/create" class="size-std">Create</a></li>
+                <li><a href="<%= baseurl() %>project/" class="size-std">View</a></li>
+            </ul>
+        </li>
+        <!-- <li><a href="<%= baseurl() %>workflow/User" class="size-std"><img src="<%= baseurl() %>images/profile-blue.png">User</a></li> -->
+        <% if(login.adminses==true){ %>
+        <li><p class="nopad accord size-std" href="#user"><img src="<%= baseurl() %>images/icon/profile-blue.png">User</p>
+            <ul class="submenu" id="user">
+                <li><a href="<%= baseurl() %>User" class="size-std">User</a></li>
+                <li><a href="<%= baseurl() %>team" class="size-std">Team</a></li>
+            </ul>
+        </li>
+        <% } %>
+        <li><a href="" class="size-std"><img src="<%= baseurl() %>images/icon/settings-2.png">Setting</a></li>
+        <li><a href="<%= baseurl() %>logout" class="size-std"><img src="<%= baseurl() %>images/icon/logout-blue.png">Logout</a></li>
+    </ul>
+</div>
