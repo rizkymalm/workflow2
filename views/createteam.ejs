@@ -1,0 +1,70 @@
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Request</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <% include ./partials/header %>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="lSide">
+            <% include ./partials/sidebar %>
+        </div>
+        <div class="rSide">
+            <div class="head gradientr"></div>
+            <div class="mainbox column">
+                <div class="cols-12 containt">
+                    <form action="<%= baseurl() %>workflow/team/save" method="POST" id="validate-frm">
+                    <table style="width: 100%;" cellpadding="8" cellspacing="8" class="size-std">
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Department</td>
+                            <td>
+                                <select name="dept" onChange="getUser(this,false)" id="optdept" class="frm-std">
+                                    <option value="">--Select Department--</option>
+                                    <% for(dep of dept){ %>
+                                        <option value="<%= dep.id_departement %>"><%= dep.department+" ("+dep.initial+")" %></option>
+                                    <% } %>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right; width: 30%;">Leader</td>
+                            <td style="position: relative;">
+                                <div class="loadSelect">
+                                    <img src="<%= baseurl() %>images/icon/ajaxloader.gif">
+                                </div>
+                                <select name="leader" id="useropen" class="frm-std">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;">Team Name</td>
+                            <td style="position: relative;">
+                                <input type="text" name="name" class="frm-std">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: center;"><button type="submit" class="myBtn myButton-edit">Save</button></td>
+                        </tr>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<% include ./partials/footer %>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/validateForm.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#req_tab").on('click','.delete',function(){
+        var id_req = $(this).data("id");
+        $('.popup').show();
+        $('.blur').show();
+        $('.req_id').val(id_req);
+    })
+})
+</script>
+</html>

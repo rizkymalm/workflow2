@@ -29,7 +29,7 @@ app.use(express.static("public"));
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter)
-app.use("/workflow", UserRouter);
+app.use("/user", UserRouter);
 app.get("/logout", function(req,res) {
     req.session.destroy();
     res.redirect("/login")

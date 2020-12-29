@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Request</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <%- include ('./partials/header') %>
+    </head>
+    <body>
+        <div class="blur" style="display: none; z-index: 1001"></div>
+        <div class="popup">
+            <div class="close-onbox" onClick="closePopup()">
+                <div style="width: 15px; height: 15px;">
+                    <img src="<%= baseurl() %>images/icon/cross-thick.png">
+                </div>
+            </div>
+            <form action="/delete" method="POST">
+                <table class="popupContent" cellspacing="10" cellpadding="10">
+                    <tr>
+                        <td style="text-align: left;">Delete</td>
+                    </tr>
+                    <tr>
+                        <td>Apakah anda yakin ingin menghapus request ini ?<input type="hidden" name="id" class="req_id"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="myBtn myButton-edit" onclick="closePopup()">Cancel</button>
+                            <button type="submit" class="myBtn myButton-delete">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div class="popupBtn">
+                <a href="" class="myButton-gradBlueGreen size-std"></a>
+                <a href="" class="myButton-white size-std"></a>
+            </div>
+        </div>
+        <div class="wrapper" ng-app="myApp" ng-controller="myCtrl">
+            <div class="lSide">
+                <%- include ('./partials/sidebar') %>
+            </div>
+            <div class="rSide">
+                <div class="head gradientr"></div>
+                <div class="mainbox column">
+                    <div class="cols-12 containt">
+                        <form action="<%= baseurl() %>user/update" method="POST" id="validate-frm" style="overflow: hidden;">
+                            <table style="width: 100%;" cellpadding="8" cellspacing="8" class="size-std">
+                                <tr>
+                                    <td style="text-align: right; width: 30%;" class="frm-std">Email</td>
+                                    <td><input type="hidden" name="id" value="<%= dapat[0].id_employee %>"><input type="text" name="email" value="<%= dapat[0].email_employee %>"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right; width: 30%;" class="frm-std">Nama</td>
+                                    <td><input type="text" name="nama" value="<%= dapat[0].name_employee %>"></td>
+                                    </tr>
+                                <tr>
+                                <tr>
+                                    <td style="text-align: right; width: 30%;" class="frm-std">department</td>
+                                    <td>
+                                        <select name="dept">
+                                            <% 
+                                            for(var dept of dept){ 
+                                            if(dept.id_department == dapat[0].id_department){
+                                                var selected = "selected"
+                                            }else{
+                                                var selected = ""
+                                            }
+                                            %>
+                                                <option value="<%= dept.id_department %>" <%= selected %> ><%= dept.department %></option>
+                                            <% } %>
+                                        </select>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                        <td colspan="2" style="text-align: center;"><button type="submit" class="myBtn myButton-submit">Save</button></td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <%- include ('./partials/footer') %>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="js/validateForm.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#req_tab").on('click','.delete',function(){
+            var id_req = $(this).data("id");
+            $('.popup').show();
+            $('.blur').show();
+            $('.req_id').val(id_req);
+        })
+    })
+    </script>
+</html>

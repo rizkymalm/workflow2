@@ -1,0 +1,81 @@
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Request</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <%-include ./partials/header %>
+    </head>
+    <body>
+        <div class="blur" style="display: none; z-index: 1001"></div>
+        <div class="wrapper" ng-app="myApp" ng-controller="PageCtrl">
+            <div class="lSide">
+                <% include ./partials/sidebar %>
+            </div>
+            <div class="rSide">
+                <div class="head gradientr"></div>
+                <div class="mainbox column">
+                    <div class="cols-12 containt">
+                        <div class="headtitle trans">
+                            <p class="size-head4 nopad">User List</p>
+                        </div>
+                        <div class="list-control">
+                            <div class="list-control-box">
+                                <button class="option-click btn-list-control" onClick="clickToggle(list_control_show)">
+                                    Show :&nbsp; 25 
+                                    <img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+                                </button>
+                                <div class="option-box option-menu shadow half box-list-control" id="list_control_show">
+                                    <ul class="full-length nopad">
+                                        <li class="pad-tb" ng-click="limitList(1)">20</li>
+                                        <li class="pad-tb" ng-click="limitList(2)">50</li>
+                                        <li class="pad-tb" ng-click="limitList(3)">100</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="list-control-box">
+                                <button class="option-click btn-list-control" onClick="clickToggle(list_control_sort)">
+                                    Group By :&nbsp; <span id="GroupControl" class="text-control">-Not Selected-</span>
+                                    <img src="<%= baseurl() %>images/icon/arrow-down.png" class="icon-list-control">
+                                </button>
+                                <div class="option-box option-menu shadow half box-list-control" id="list_control_sort">
+                                    <ul style="width: 100%;" class="nopad value-control">
+                                        <li data-select="Email" ng-click="sort('email')">Team Name</li>
+                                        <li data-select="Nama" ng-click="sort('nama')">Leader Name</li>
+                                        <li data-select="Department" ng-click="sort('dept')">Department</li>
+                                    </ul>
+                                </div>
+                                <input type="search" ng-model="search">
+                            </div>
+                            <div class="list-control-box" style="float: right;">
+                                <a href="<%= baseurl() %>workflow/team/create" class="myBtn myButton-edit" style="display: block;">Create New</a>
+                            </div>
+                        </div>
+                        <table class="full-tables size-std" cellspacing="0" cellpadding="0">
+                            <thead>
+                                <tr>
+                                    <th ng-click="sort('email')" align="left">Team Name</th>
+                                    <th ng-click="sort('nama')" align="left">Leader Name</th>
+                                    <th ng-click="sort('dept')">Department</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <% for(let team of teams){ %>
+                            <tbody>
+                                <tr>
+                                    <td><%= team.team_name %></td>
+                                    <td><%= team.nama %></td>
+                                    <td style="text-align: center;"><%= team.department %></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                            <% } %>
+                        </table>
+                        <dir-pagination-controls max-size="2" direction-links="true"boundary-links="true"></dir-pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+<% include ./partials/footer %>
+</html>
